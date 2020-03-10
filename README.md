@@ -22,4 +22,6 @@
 3. Type 'npm install' to install frontend dependencies
 4. Type 'npm run start' to start client server
 
-## Project Documents: TBA
+## Project Documents (Google Docs):
+
+- [Project Backlog](https://docs.google.com/spreadsheets/d/1xL222FVPeo5MLKAXXRyjO8meQvX-7i1IBg-ogQp9kgw/edit?usp=sharing)
