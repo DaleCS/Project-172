@@ -1,0 +1,19 @@
+{
+  "name": "theitcrowd-team8-172",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm run start --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaleCS/TheITCrowd-Team8-172.git"
+  },
+  "author": "The It Crowd - Team 8",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaleCS/TheITCrowd-Team8-172/issues"
+  },
+  "homepage": "https://github.com/DaleCS/TheITCrowd-Team8-172#readme"
+}
