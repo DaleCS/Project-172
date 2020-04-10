@@ -14,13 +14,23 @@
 ## Project Development Requirements:
 
 1. NodeJS Runtime Environment
+2. Java 11
+3. Local MySQL instance at port 3306 w/ database named "todo" and credentials entered in server/src/main/resources/application.properties
 
 ## How to run program:
+
+### Client
 
 1. Open up a terminal and change directory (cd) to the project directory
 2. cd to 'client'
 3. Type 'npm install' to install frontend dependencies
 4. Type 'npm run start' to start client server
+
+### Server
+
+1. Open up a terminal and change directory (cd) to the project directory
+2. cd to server/main/java/com/theitcrowd/TodoApplication.java
+3. Run the main method of TodoApplication.java
 
 ## Project Documents (Google Docs):
 
