@@ -11,7 +11,7 @@
 
 ## Application URL: TBA
 
-## Project Development Requirements:
+## Project Development Environment Requirements:
 
 1. NodeJS Runtime Environment
 2. Java 11
@@ -34,5 +34,6 @@
 
 ## Project Documents (Google Docs):
 
-- [Project Backlog](https://docs.google.com/spreadsheets/d/1xL222FVPeo5MLKAXXRyjO8meQvX-7i1IBg-ogQp9kgw/edit?usp=sharing)
 - [Project Proposal](https://docs.google.com/document/d/1qxvki3F0zz8bxmlaqNY0W6UA-gU2xafN5GrrWD1lQOs/edit?usp=sharing)
+- [Project Backlog](https://docs.google.com/spreadsheets/d/1xL222FVPeo5MLKAXXRyjO8meQvX-7i1IBg-ogQp9kgw/edit?usp=sharing)
+- [Database ERD](https://drive.google.com/file/d/1YBNmNB-DwWwcsTWDBla1Nk2MjC2HV14G/view?usp=sharing)
