@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
+    private long userId;
     @NotNull
     private String email;
     @NotNull
@@ -25,7 +25,7 @@ public class User {
     public User() {
     }
 
-    public User(Long userId, String email, String passwordHash, String username, String creationDate) {
+    public User(long userId, String email, String passwordHash, String username, String creationDate) {
         this.userId = userId;
         this.email = email;
         this.passwordHash = passwordHash;
@@ -33,7 +33,7 @@ public class User {
         this.creationDate = creationDate;
     }
 
-    public Long getId() {
+    public long getId() {
         return userId;
     }
 
@@ -51,6 +51,10 @@ public class User {
 
     public String getCreationDate() {
         return creationDate;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public String toString() {
