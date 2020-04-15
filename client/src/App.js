@@ -7,15 +7,16 @@ import store from "./store";
 
 // Component Imports
 import Landing from "./components/landing/Landing";
+import Registration from "./components/authentication/Registration";
 
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <Router>
-          React is up and running!
           <Switch>
             <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Registration} />
           </Switch>
         </Router>
       </Provider>
