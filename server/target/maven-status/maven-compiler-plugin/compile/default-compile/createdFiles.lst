@@ -1,0 +1,7 @@
+com/theitcrowd/todo/dao/UserDAO.class
+com/theitcrowd/todo/model/forms/UserRegistrationForm.class
+com/theitcrowd/todo/api/UserController.class
+com/theitcrowd/todo/model/User.class
+com/theitcrowd/todo/TodoApplication.class
+com/theitcrowd/todo/service/UserService.class
+com/theitcrowd/todo/WebSecurityConfiguration.class
