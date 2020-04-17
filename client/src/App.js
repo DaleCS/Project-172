@@ -23,7 +23,6 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Navbar bg = "dark" expand = "lg" variant = "dark">
-<<<<<<< HEAD
           <Navbar.Toggle aria-controls = "basic-navbar-nav" />
           <Navbar.Collapse id = "basic-navbar-nav">
             <Nav className = {[styles.navbar, "mr-auto"].join(' ')}>
@@ -35,21 +34,6 @@ class App extends Component {
               <Button variant = "outline-success">Login</Button>
             </Form>
           </Navbar.Collapse>
-=======
-          {/* <Container> */}
-            <Navbar.Toggle aria-controls = "basic-navbar-nav" />
-            <Navbar.Collapse id = "basic-navbar-nav">
-              <Nav className = {[styles.navbar, "mr-auto"].join(' ')}>
-                <Navbar.Brand href = "#home">TODO</Navbar.Brand>
-                <Nav.Link href = "#home">Home</Nav.Link>
-                <Nav.Link href = "#link">Link</Nav.Link>
-              </Nav>
-              <Form inline className = {styles.item}>
-                <Button variant = "outline-success">Login</Button>
-              </Form>
-            </Navbar.Collapse>
-          {/* </Container> */}
->>>>>>> 3c72ebd03422dff6f741e283077368cc0388a443
         </Navbar>
         <Router>
           <Switch>

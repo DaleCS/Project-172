@@ -34,11 +34,7 @@ class Landing extends Component {
             <div className = {styles.opacity}>
               <div className = {[styles.text, styles.content].join(' ')}>
                 <h1>About<br />TODO</h1>
-<<<<<<< HEAD
                 <p className = {styles.p}>
-=======
-                <p>
->>>>>>> 3c72ebd03422dff6f741e283077368cc0388a443
                   TODO helps you organize different sectors of your life within a single application.
                   Finish tasks, errands, assignments, and more by creating customized to-do lists.<br/><br/>
                 
