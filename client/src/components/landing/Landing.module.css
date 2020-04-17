@@ -41,7 +41,11 @@
     font-size: 3.5vw;
 }
 
+<<<<<<< HEAD
 .p {
+=======
+p {
+>>>>>>> 3c72ebd03422dff6f741e283077368cc0388a443
     font-size: 1.2vw;
     max-width: 55%;
 }
