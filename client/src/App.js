@@ -23,19 +23,17 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Navbar bg = "dark" expand = "lg" variant = "dark">
-          {/* <Container> */}
-            <Navbar.Toggle aria-controls = "basic-navbar-nav" />
-            <Navbar.Collapse id = "basic-navbar-nav">
-              <Nav className = {[styles.navbar, "mr-auto"].join(' ')}>
-                <Navbar.Brand href = "#home">TODO</Navbar.Brand>
-                <Nav.Link href = "#home">Home</Nav.Link>
-                <Nav.Link href = "#link">Link</Nav.Link>
-              </Nav>
-              <Form inline className = {styles.item}>
-                <Button variant = "outline-success">Login</Button>
-              </Form>
-            </Navbar.Collapse>
-          {/* </Container> */}
+          <Navbar.Toggle aria-controls = "basic-navbar-nav" />
+          <Navbar.Collapse id = "basic-navbar-nav">
+            <Nav className = {[styles.navbar, "mr-auto"].join(' ')}>
+              <Navbar.Brand href = "#home">TODO</Navbar.Brand>
+              <Nav.Link href = "#home">Home</Nav.Link>
+              <Nav.Link href = "#link">Link</Nav.Link>
+            </Nav>
+            <Form inline className = {styles.item}>
+              <Button variant = "outline-success">Login</Button>
+            </Form>
+          </Navbar.Collapse>
         </Navbar>
         <Router>
           <Switch>
