@@ -9,6 +9,13 @@ import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+<<<<<<< HEAD
+=======
+
+// Redux Imports
+import { Provider } from "react-redux";
+import store from "./store";
+>>>>>>> Began work on frontend of user authentication
 
 // Component Imports
 import PrivateRoute from "./components/routing/PrivateRoute";
