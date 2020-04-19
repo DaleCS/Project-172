@@ -1,11 +1,9 @@
 // React Imports
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 // Redux Imports
-import { connect } from "react-redux";
-import { registerUser } from "../../actions/authenticationActions";
+import { loginUser } from "../../actions/authenticationActions";
 
 // Material UI Imports
 import {
@@ -55,46 +53,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Registration = (props) => {
+const Login = (props) => {
   const classes = useStyles();
 
   const [emailField, setEmailField] = useState("");
-  const [usernameField, setUsernameField] = useState("");
   const [passwordField, setPasswordField] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleEmailFieldChange = (e) => {
     setEmailField(e.target.value);
-  };
-
-  const handleUsernameFieldChange = (e) => {
-    setUsernameField(e.target.value);
   };
 
   const handlePasswordFieldChange = (e) => {
     setPasswordField(e.target.value);
   };
 
-  const onClickSignUp = (e) => {
+  const onClickLogIn = (e) => {
     e.preventDefault();
-    const newUser = {
+    const userCredentials = {
       email: emailField,
-      username: usernameField,
       password: passwordField,
     };
 
-    props.registerUser(newUser, props.history);
+    loginUser(userCredentials, setLoading, props.history);
   };
 
   const onClickBack = (e) => {
     e.preventDefault();
     props.history.goBack();
   };
-
-  const spinner = (
-    <Grid item>
-      <CircularProgress />
-    </Grid>
-  );
 
   return (
     <Grid
@@ -116,12 +103,10 @@ const Registration = (props) => {
               <AccountCircleIcon className={classes.iconSize} color="primary" />
             </Grid>
             <Grid item>
-              <Typography variant="h5">Signing up</Typography>
+              <Typography variant="h5">Logging in</Typography>
             </Grid>
             <Grid item className={classes.mb16}>
-              <Typography variant="body2">
-                We're just gonna need a few things from you...
-              </Typography>
+              <Typography variant="body2">Welcome back!</Typography>
             </Grid>
             <Grid item className={classes.mb8}>
               <TextField
@@ -139,13 +124,6 @@ const Registration = (props) => {
               ></TextField>
             </Grid>
             <Grid item className={classes.mb32}>
-              <TextField
-                required
-                label="Username"
-                onChange={handleUsernameFieldChange}
-              ></TextField>
-            </Grid>
-            <Grid item className={classes.mb32}>
               <Grid
                 container
                 direction="row"
@@ -159,9 +137,9 @@ const Registration = (props) => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={onClickSignUp}
+                    onClick={onClickLogIn}
                   >
-                    Sign up
+                    Log in
                   </Button>
                 </Grid>
               </Grid>
@@ -169,16 +147,16 @@ const Registration = (props) => {
             <Grid item>
               <Grid
                 container
-                direction="row"
+                direction="column"
                 justify="center"
                 alignItems="center"
               >
                 <Grid item>
-                  {props.auth.loading === true ? (
+                  {loading === true ? (
                     <CircularProgress />
                   ) : (
                     <Typography variant="body2">
-                      Already have an account? <Link to="/login">Log in</Link>
+                      Don't have an account? <Link to="/register">Sign up</Link>
                     </Typography>
                   )}
                 </Grid>
@@ -191,15 +169,4 @@ const Registration = (props) => {
   );
 };
 
-Registration.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, { registerUser })(Registration);
+export default Login;

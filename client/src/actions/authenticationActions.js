@@ -30,3 +30,18 @@ export const registerUser = (newUser, history) => async (dispatch) => {
     });
   }
 };
+
+export const loginUser = async (userCredentials, setLoading, history) => {
+  setLoading(true);
+  try {
+    const body = JSON.stringify(userCredentials);
+
+    const res = await axios.post("/api/user/login", body, config);
+    console.log(res.data);
+    setLoading(false);
+    history.push("/dashboard");
+  } catch (errRes) {
+    console.log("Error encountered during log in");
+    setLoading(false);
+  }
+};
