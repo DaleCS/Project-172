@@ -29,7 +29,9 @@ export const loginUser = async (userCredentials, setLoading, history) => {
 
     const res = await axios.post("/api/user/login", body, config);
 
-    localStorage.setItem("todotoken", res.data.token);
+    console.log(res.data);
+
+    localStorage.setItem("todotoken", res.data);
 
     setLoading(false);
     history.push("/dashboard");
