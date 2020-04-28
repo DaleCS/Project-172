@@ -1,6 +1,6 @@
 export const isLoggedIn = () => {
-  const token = localStorage.getItem("todotoken");
-  if (token) {
+  const user = localStorage.getItem("todotoken");
+  if (user && user.token) {
     return true;
   } else {
     return false;
