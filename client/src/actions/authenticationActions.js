@@ -49,6 +49,7 @@ export const loginUser = async (userCredentials, setLoading, history) => {
     console.log(res.data);
 
     localStorage.setItem("todotoken", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user)) 
 
     setLoading(false);
     history.push("/dashboard");
