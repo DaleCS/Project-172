@@ -15,6 +15,9 @@ public interface UserDAO extends CrudRepository<User, Long> {
     @Query(value = "SELECT * FROM users WHERE email = ?1 OR username = ?2", nativeQuery = true)
     List<User> checkExistingUser(String email, String username);
 
+    @Query(value = "Select * FROM users WHERE email = ?1", nativeQuery = true)
+    List<User> findUser(String email);
+
     @Modifying
     @Query(value = "INSERT INTO users(email, password_hash, username) VALUES (?1, ?2, ?3)", nativeQuery = true)
     void insertNewUser(String email, String password_hash, String username);

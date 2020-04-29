@@ -15,22 +15,24 @@
 
 1. NodeJS Runtime Environment
 2. Java 11
-3. Local MySQL instance at port 3306 w/ database named "todo" and credentials entered in server/src/main/resources/application.properties
+3. Maven (If your IDE does not support it)
+4. Local MySQL instance at port 3306 w/ database named "todo" and credentials entered in server/src/main/resources/application.properties
 
-## How to run program:
+## How To Run The Program:
 
 ### Client
 
 1. Open up a terminal and change directory (cd) to the project directory
-2. cd to 'client'
-3. Type 'npm install' to install frontend dependencies
-4. Type 'npm run start' to start client server
+2. `cd` to 'client'
+3. Type `npm install` to install frontend dependencies
+4. Type `npm run start` to start client server
 
 ### Server
 
-1. Open up a terminal and change directory (cd) to the project directory
-2. cd to server/main/java/com/theitcrowd/TodoApplication.java
-3. Run the main method of TodoApplication.java
+1. Open the project using an IDE that supports Java development
+2. Build the dependencies of the maven project using your IDE or typing this in a terminal: <br/>
+   `mvn spring-boot:run`
+3. Run the main method at server/src/main/java/TodoApplication.java
 
 ## Project Documents (Google Docs):
 
