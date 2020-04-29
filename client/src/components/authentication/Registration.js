@@ -1,10 +1,7 @@
 // React Imports
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-// Redux Imports
-import { connect } from "react-redux";
 import { registerUser } from "../../actions/authenticationActions";
 
 // Material UI Imports
@@ -61,6 +58,7 @@ const Registration = (props) => {
   const [emailField, setEmailField] = useState("");
   const [usernameField, setUsernameField] = useState("");
   const [passwordField, setPasswordField] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
   const handleEmailFieldChange = (e) => {
     setEmailField(e.target.value);
@@ -82,19 +80,13 @@ const Registration = (props) => {
       password: passwordField,
     };
 
-    props.registerUser(newUser, props.history);
+    registerUser(newUser, setLoading, props.history);
   };
 
   const onClickBack = (e) => {
     e.preventDefault();
     props.history.goBack();
   };
-
-  const spinner = (
-    <Grid item>
-      <CircularProgress />
-    </Grid>
-  );
 
   return (
     <Grid
@@ -174,7 +166,7 @@ const Registration = (props) => {
                 alignItems="center"
               >
                 <Grid item>
-                  {props.auth.loading === true ? (
+                  {isLoading === true ? (
                     <CircularProgress />
                   ) : (
                     <Typography variant="body2">
@@ -191,15 +183,4 @@ const Registration = (props) => {
   );
 };
 
-Registration.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, { registerUser })(Registration);
+export default Registration;

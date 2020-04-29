@@ -54,21 +54,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("todotoken")
+      const user = JSON.parse(localStorage.getItem("todotoken"))
       const config = {
         headers: {
-          Accept: 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${user.token}`
         },
       };
-      const user = JSON.parse(localStorage.getItem("user"))
-      const lists = await axios.get('http://localhost:8080/api/todolists/allLists?', {
+      //I don't understand why I'm not allowed to make a get request, error 403 (forbidden).
+      const response = await axios({
+        method: 'GET',
+        url: '/api/todolists/allLists',
+        headers: config, 
         params: {
-        user_id :  user.userId
-      }}, config)
-      console.log(lists.json())
+        user_id :  user.user.userId
+      }})
+      const data = await response.json();
+      if (response.status >= 400){
+        throw new Error(data.errors)
+      }
       setTodoLists(prevLists => {
-        return [...prevLists, {lists}]
+        return [...prevLists,]
       })
     }
     fetchData()

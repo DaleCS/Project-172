@@ -10,10 +10,6 @@ import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-// Redux Imports
-import { Provider } from "react-redux";
-import store from "./store";
-
 // Component Imports
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Landing from "./components/landing/Landing";
@@ -24,30 +20,28 @@ import Dashboard from "./components/dashboard/Dashboard";
 class App extends Component {
   render() {
     return (
-      <Provider store={store}>
-        <Router>
-          <Navbar bg="dark" expand="lg" variant="dark">
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className={[styles.navbar, "mr-auto"].join(" ")}>
-                <Navbar.Brand href="">TODO</Navbar.Brand>
-                <Nav.Link href="/dashboard">Home</Nav.Link>
-              </Nav>
-              <Form inline className={styles.item}>
-                <Button variant="outline-success">
-                  <Link to="/login">Sign in</Link>
-                </Button>
-              </Form>
-            </Navbar.Collapse>
-          </Navbar>
-          <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Registration} />
-            <Route exact path="/login" component={Login} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-          </Switch>
-        </Router>
-      </Provider>
+      <Router>
+        <Navbar bg="dark" expand="lg" variant="dark">
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className={[styles.navbar, "mr-auto"].join(" ")}>
+              <Navbar.Brand href="">TODO</Navbar.Brand>
+              <Nav.Link href="/dashboard">Home</Nav.Link>
+            </Nav>
+            <Form inline className={styles.item}>
+              <Button variant="outline-success">
+                <Link to="/login">Sign in</Link>
+              </Button>
+            </Form>
+          </Navbar.Collapse>
+        </Navbar>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/register" component={Registration} />
+          <Route exact path="/login" component={Login} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        </Switch>
+      </Router>
     );
   }
 }

@@ -4,7 +4,6 @@ const token = localStorage.getItem("todotoken")
 const config = {
     headers: {
       "content-type": "application/json",
-      Accept: 'application/json',
       'Authorization': `Bearer ${token}`
     },
   };
