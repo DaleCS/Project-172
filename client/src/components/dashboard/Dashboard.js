@@ -60,6 +60,7 @@ const Dashboard = () => {
           'Authorization': `Bearer ${user.token}`
         },
       };
+      
       //I don't understand why I'm not allowed to make a get request, error 403 (forbidden).
       const response = await axios({
         method: 'GET',
@@ -72,6 +73,8 @@ const Dashboard = () => {
       if (response.status >= 400){
         throw new Error(data.errors)
       }
+      //
+
       setTodoLists(prevLists => {
         return [...prevLists,]
       })
