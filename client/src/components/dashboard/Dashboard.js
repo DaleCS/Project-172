@@ -1,116 +1,137 @@
-import React, {useState, useRef, useEffect}  from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Grid from '@material-ui/core/Grid';
-import TodoList from './TodoList';
-import uuidv4 from 'uuid/v4';
+import React, { useState, useRef, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
+import TodoList from "./TodoList";
+import uuidv4 from "uuid/v4";
 import axios from "axios";
 
-import {addTodoList} from '../../actions/dashboard';
+import { addTodoList } from "../../actions/dashboard";
 
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    padding: 20
-  }
+    padding: 20,
+  },
 });
 
 const Dashboard = () => {
-  const [todoLists, setTodoLists] = useState ([{_id: '', todoListID: 0, title: "", status: ""}])
-  const [todos, setTodos] = useState ([{id: 1, name: 'Todo', complete: false}])
+  const [todoLists, setTodoLists] = useState([
+    { _id: "", todoListID: 0, title: "", status: "" },
+  ]);
+  const [todos, setTodos] = useState([
+    { id: 1, name: "Todo", complete: false },
+  ]);
   const classes = useStyles();
   const listNameRef = useRef();
   const todoNameRef = useRef();
 
-  function toggleTodo(id){
-    const newTodos = [...todos]
-    const todo  = newTodos.find(todo => todo.id === id)
-    todo.complete = !todo.complete
-    setTodos(newTodos)
+  function toggleTodo(id) {
+    const newTodos = [...todos];
+    const todo = newTodos.find((todo) => todo.id === id);
+    todo.complete = !todo.complete;
+    setTodos(newTodos);
   }
 
-  function handleAddList(e){
-    const title = listNameRef.current.value
-    if (title === '') return
+  function handleAddList(e) {
+    const title = listNameRef.current.value;
+    if (title === "") return;
     // const list = {
     //   title: title,
     //   user_id: user_id,
     //   status: "Planned"
     // }
     // addTodoList(list)
-    setTodoLists(prevLists => {
-      return [...prevLists, {id: uuidv4(), todoListID: 12312, title: title, description: "none", status: false }]
-    })
-    listNameRef.current.value = null  
+    setTodoLists((prevLists) => {
+      return [
+        ...prevLists,
+        {
+          id: uuidv4(),
+          todoListID: 12312,
+          title: title,
+          description: "none",
+          status: false,
+        },
+      ];
+    });
+    listNameRef.current.value = null;
   }
-  function handleAddTodo(e){
-    const name = todoNameRef.current.value
-    if (name === '') return
-    setTodos(prevTodos => {
-      return [...prevTodos, {id: uuidv4(), name: name, complete:false}]
-    })
-    todoNameRef.current.value = null
+  function handleAddTodo(e) {
+    const name = todoNameRef.current.value;
+    if (name === "") return;
+    setTodos((prevTodos) => {
+      return [...prevTodos, { id: uuidv4(), name: name, complete: false }];
+    });
+    todoNameRef.current.value = null;
   }
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("todotoken")
+      const token = localStorage.getItem("todotoken");
       const config = {
         headers: {
-          Accept: 'application/json',
-          'Authorization': `Bearer ${token}`
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
         },
       };
-      const user = JSON.parse(localStorage.getItem("user"))
-      const lists = await axios.get('http://localhost:8080/api/todolists/allLists?', {
-        params: {
-        user_id :  user.userId
-      }}, config)
-      console.log(lists.json())
-      setTodoLists(prevLists => {
-        return [...prevLists, {lists}]
-      })
-    }
-    fetchData()
+      const user = JSON.parse(localStorage.getItem("user"));
+      const lists = await axios.get(
+        "http://localhost:8080/api/todolists/allLists?",
+        {
+          params: {
+            user_id: user.userId,
+          },
+        },
+        config
+      );
+      console.log(lists.json());
+      setTodoLists((prevLists) => {
+        return [...prevLists, { lists }];
+      });
+    };
+    fetchData();
+  }, []);
 
-  }, [])
-
-
-
-
-
-
-
-
-  return( 
-    <div className = {classes.root}>
-      <Grid container spacing={3} justify = "center">
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={3} justify="center">
         <Grid item xs={6} sm={3}>
-          <input ref = {listNameRef} id="outlined-basic" placeholder="Todo List" size = "40"/>
-          <button variant="contained" color="primary" onClick = {handleAddList}>
+          <input
+            ref={listNameRef}
+            id="outlined-basic"
+            placeholder="Todo List"
+            size="40"
+          />
+          <button variant="contained" color="primary" onClick={handleAddList}>
             Add
           </button>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <Box>
-            {todoLists.map(list => {
-              return <div>{list.title}</div>
+            {todoLists.map((list) => {
+              return <div>{list.title}</div>;
             })}
           </Box>
         </Grid>
         <Grid item xs={6} sm={3}>
-        <input ref = {todoNameRef} id="outlined-basic" placeholder="Todo List Item"  size = "40"/>
-          <button variant="contained" color="primary" onClick= {handleAddTodo}>
+          <input
+            ref={todoNameRef}
+            id="outlined-basic"
+            placeholder="Todo List Item"
+            size="40"
+          />
+          <button variant="contained" color="primary" onClick={handleAddTodo}>
             Add
           </button>
-          <br/>
-          <br/>  
+          <br />
+          <br />
           <Box>
-            <TodoList todos = {todos} toggleTodo={toggleTodo}/>
+            <TodoList todos={todos} toggleTodo={toggleTodo} />
           </Box>
         </Grid>
       </Grid>
-    </div>);
+    </div>
+  );
 };
 
 export default Dashboard;
