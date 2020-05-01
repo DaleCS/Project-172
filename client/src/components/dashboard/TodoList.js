@@ -12,21 +12,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TodoList = (props) => {
-  const [highlighted, setHighlighted] = useState(false);
-  const [title, setTitle] = useState("");
-
-  useEffect(() => {
-    setTitle(props.title);
-    setHighlighted(props.highlighted);
-  });
-
   const classes = useStyles();
 
   return (
-    <Grid item xs={12} className={classes.bottomBorderOnly}>
+    <Grid
+      item
+      xs={12}
+      className={classes.bottomBorderOnly}
+      onClick={(event) => {
+        event.preventDefault();
+        props.handleOnClickTodoList(props.index);
+      }}
+    >
       <Grid container direction="row" alignItems="center">
         <Typography variant="body1" className={classes.p8}>
-          {title}
+          {props.title}
         </Typography>
       </Grid>
     </Grid>
