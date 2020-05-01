@@ -1,139 +1,92 @@
-import React, { useState, useRef, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
+import React, { useState, useEffect } from "react";
+
 import TodoList from "./TodoList";
-import uuidv4 from "uuid/v4";
-import axios from "axios";
+import TodoListItem from "./TodoListItem";
 
-import { addTodoList } from "../../actions/dashboard";
+import { makeStyles, Grid, Paper } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    padding: 20,
+    minHeight: "60vh",
   },
-});
+  flexGrow1: {
+    flexGrow: 1,
+  },
+  todoListEntries: {
+    height: "100%",
+    padding: "8px",
+    paddingTop: "4px",
+    paddingBottom: "4px",
+  },
+  border1: {
+    border: "1px solid black",
+  },
+  border2: {
+    border: "1px solid red",
+  },
+  bottomBorderOnly: {
+    borderBottom: "1px solid #bdc3c7",
+  },
+  w100: {
+    width: "100%",
+  },
+  h100: {
+    height: "100%",
+  },
+  w80: {
+    width: "80%",
+  },
+  p8: {
+    padding: "8px",
+  },
+}));
 
-const Dashboard = () => {
-  const [todoLists, setTodoLists] = useState([
-    { _id: "", todoListID: 0, title: "", status: "" },
-  ]);
-  const [todos, setTodos] = useState([
-    { id: 1, name: "Todo", complete: false },
-  ]);
+const Dashboard = (props) => {
   const classes = useStyles();
-  const listNameRef = useRef();
-  const todoNameRef = useRef();
-
-  function toggleTodo(id) {
-    const newTodos = [...todos];
-    const todo = newTodos.find((todo) => todo.id === id);
-    todo.complete = !todo.complete;
-    setTodos(newTodos);
-  }
-
-  function handleAddList(e) {
-    const title = listNameRef.current.value;
-    if (title === "") return;
-    // const list = {
-    //   title: title,
-    //   user_id: user_id,
-    //   status: "Planned"
-    // }
-    // addTodoList(list)
-    setTodoLists((prevLists) => {
-      return [
-        ...prevLists,
-        {
-          id: uuidv4(),
-          todoListID: 12312,
-          title: title,
-          description: "none",
-          status: false,
-        },
-      ];
-    });
-    listNameRef.current.value = null;
-  }
-  function handleAddTodo(e) {
-    const name = todoNameRef.current.value;
-    if (name === "") return;
-    setTodos((prevTodos) => {
-      return [...prevTodos, { id: uuidv4(), name: name, complete: false }];
-    });
-    todoNameRef.current.value = null;
-  }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const user = JSON.parse(localStorage.getItem("todotoken"));
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
-
-      //I don't understand why I'm not allowed to make a get request, error 403 (forbidden).
-      const response = await axios.get(
-        `/api/todolists/allLists?user_id=21`,
-        config
-      );
-
-      console.log(response.data[0]);
-
-      // const data = await response.json();
-      if (response.status >= 400) {
-        throw new Error(response.data.errors);
-      }
-      //
-
-      setTodoLists((prevLists) => {
-        return [...prevLists, response.data[0]];
-      });
-    };
-    fetchData();
-  }, []);
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={3} justify="center">
-        <Grid item xs={6} sm={3}>
-          <input
-            ref={listNameRef}
-            id="outlined-basic"
-            placeholder="Todo List"
-            size="40"
-          />
-          <button variant="contained" color="primary" onClick={handleAddList}>
-            Add
-          </button>
-          <br />
-          <br />
-          <Box>
-            {todoLists.map((list) => {
-              return <div>{list.title}</div>;
-            })}
-          </Box>
-        </Grid>
-        <Grid item xs={6} sm={3}>
-          <input
-            ref={todoNameRef}
-            id="outlined-basic"
-            placeholder="Todo List Item"
-            size="40"
-          />
-          <button variant="contained" color="primary" onClick={handleAddTodo}>
-            Add
-          </button>
-          <br />
-          <br />
-          <Box>
-            <TodoList todos={todos} toggleTodo={toggleTodo} />
-          </Box>
-        </Grid>
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      alignItems="stretch"
+      className={classes.root}
+    >
+      <Grid item xs={8}>
+        <Paper variant="outlined" square elevation={3} className={classes.h100}>
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="stretch"
+            className={classes.h100}
+          >
+            <Grid item xs={4}>
+              <Paper variant="outlined" square className={classes.h100}>
+                <Grid container direction="column" justify="flex-start">
+                  <TodoList title="Chores" highlighted={false} />
+                  <TodoList title="Homework" highlighted={false} />
+                </Grid>
+              </Paper>
+            </Grid>
+            <Grid item></Grid>
+            <Grid item xs={8}>
+              <Paper
+                variant="outlined"
+                square
+                className={classes.todoListEntries}
+              >
+                <Grid container direction="column" justify="flex-start">
+                  <TodoListItem title="Wash the dishes" finished={false} />
+                  <TodoListItem title="Sweep the floor" fininshed={false} />
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Paper>
       </Grid>
-    </div>
+    </Grid>
   );
 };
 

@@ -1,12 +1,36 @@
-import React from 'react';
-import TodoListItem from './TodoListItem';
+import React, { useState, useEffect } from "react";
 
-const TodoList = ({todos, toggleTodo}) => {
-    return (
-            todos.map(todo =>{
-                return <TodoListItem key = {todo.id} todo = {todo} toggleTodo = {toggleTodo} />
-            })
-    )
-}
+import { makeStyles, Grid, Typography } from "@material-ui/core";
 
-export default TodoList
+const useStyles = makeStyles((theme) => ({
+  bottomBorderOnly: {
+    borderBottom: "1px solid #bdc3c7",
+  },
+  p8: {
+    padding: "8px",
+  },
+}));
+
+const TodoList = (props) => {
+  const [highlighted, setHighlighted] = useState(false);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    setTitle(props.title);
+    setHighlighted(props.highlighted);
+  });
+
+  const classes = useStyles();
+
+  return (
+    <Grid item xs={12} className={classes.bottomBorderOnly}>
+      <Grid container direction="row" alignItems="center">
+        <Typography variant="body1" className={classes.p8}>
+          {title}
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default TodoList;
