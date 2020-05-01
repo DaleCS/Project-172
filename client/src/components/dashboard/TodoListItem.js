@@ -1,21 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-import { Grid, Typography, Checkbox } from "@material-ui/core";
+import { makeStyles, Grid, Typography, Checkbox } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  lineThrough: {
+    textDecoration: "line-through",
+  },
+}));
 
 const TodoListItem = (props) => {
+  const { status, title } = props.entry;
+  const { handleOnClickEntry, index } = props;
+
+  const classes = useStyles();
+
   return (
     <Grid item xs={12}>
       <Grid container direction="row" justify="flex-start" alignItems="center">
         <Grid item>
           <Checkbox
-            checked={props.entry.status}
-            onChange={() => {
-              props.handleToggleEntryStatus(props.entry);
+            checked={status}
+            onChange={(event) => {
+              handleOnClickEntry(index, event.target.checked);
             }}
           />
         </Grid>
         <Grid item>
-          <Typography variant="body2">{props.entry.title}</Typography>
+          <Typography
+            variant="body2"
+            className={status === true ? classes.lineThrough : ""}
+          >
+            {title}
+          </Typography>
         </Grid>
       </Grid>
     </Grid>

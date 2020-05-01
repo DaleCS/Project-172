@@ -3,12 +3,13 @@ import React, { useState, useEffect } from "react";
 import TodoList from "./TodoList";
 import TodoListItem from "./TodoListItem";
 
-import { makeStyles, Grid, Paper } from "@material-ui/core";
+import { makeStyles, Grid, Paper, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     minHeight: "60vh",
+    marginTop: "48px",
   },
   flexGrow1: {
     flexGrow: 1,
@@ -40,92 +41,106 @@ const useStyles = makeStyles((theme) => ({
   p8: {
     padding: "8px",
   },
+  mt8: {
+    marginTop: "8px",
+  },
 }));
 
 const Dashboard = (props) => {
-  const [highlighted, setHighlighted] = useState(0);
+  const [highlightedTodoListIndex, setHighlightedTodoListIndex] = useState(-1);
+  const [todoLists, setTodoLists] = useState([]);
 
-  const todoListsData = [
-    {
-      todoListId: 1,
-      title: "Chores",
-      description: "",
-      status: "Planned",
-      creationDate: "",
-      modificationDate: "",
-      todoListEntries: [
-        {
-          entryId: 1,
-          title: "Wash the dishes",
-          status: false,
-          description: "",
-        },
-        {
-          entryId: 2,
-          title: "Sweep the floor",
-          status: false,
-          description: "",
-        },
-      ],
-    },
-    {
-      todoListId: 1,
-      title: "Homework",
-      description: "",
-      status: "Planned",
-      creationDate: "",
-      modificationDate: "",
-      todoListEntries: [
-        {
-          entryId: 1,
-          title: "CMPE172",
-          status: false,
-          description: "",
-        },
-        {
-          entryId: 2,
-          title: "CMPE187",
-          status: false,
-          description: "",
-        },
-      ],
-    },
-  ];
+  useEffect(() => {
+    const dummyData = [
+      {
+        todoListId: 1,
+        title: "Chores",
+        description: "",
+        status: "Planned",
+        creationDate: "",
+        modificationDate: "",
+        todoListEntries: [
+          {
+            entryId: 1,
+            title: "Wash the dishes",
+            status: false,
+            description: "",
+          },
+          {
+            entryId: 2,
+            title: "Sweep the floor",
+            status: false,
+            description: "",
+          },
+        ],
+      },
+      {
+        todoListId: 1,
+        title: "Homework",
+        description: "",
+        status: "Planned",
+        creationDate: "",
+        modificationDate: "",
+        todoListEntries: [
+          {
+            entryId: 1,
+            title: "CMPE172",
+            status: false,
+            description: "",
+          },
+          {
+            entryId: 2,
+            title: "CMPE187",
+            status: false,
+            description: "",
+          },
+        ],
+      },
+    ];
 
-  const handleOnClickTodoList = (index) => {
-    setHighlighted(index);
+    setTodoLists(dummyData);
+  }, []);
+
+  const handleOnClickList = (index) => {
+    setHighlightedTodoListIndex(index);
   };
 
-  const handleToggleEntryStatus = (entry) => {
-    entry.status = !entry.status;
+  const handleOnClickEntry = (index, value) => {
+    const todoListsClone = [...todoLists];
+    todoListsClone[highlightedTodoListIndex].todoListEntries[
+      index
+    ].status = value;
+
+    setTodoLists(todoListsClone);
   };
 
   const classes = useStyles();
 
-  const todoListsMap = todoListsData.map((todoList, index) => {
+  const todoListsMap = todoLists.map((list, index) => {
     return (
       <TodoList
-        title={todoList.title}
+        title={list.title}
+        handleOnClickList={handleOnClickList}
         key={index}
         index={index}
-        handleOnClickTodoList={handleOnClickTodoList}
       />
     );
   });
 
-  const todoListEntryMap = (highlightedIndex) => {
-    const todoList = todoListsData[highlightedIndex];
-
-    if (todoListsData.length > 0) {
-      return todoList.todoListEntries.map((entry, index) => {
-        return (
-          <TodoListItem
-            entry={entry}
-            handleToggleEntryStatus={handleToggleEntryStatus}
-            key={index}
-          />
-        );
-      });
+  const todoListEntriesMap = () => {
+    if (highlightedTodoListIndex > -1) {
+      return todoLists[highlightedTodoListIndex].todoListEntries.map(
+        (entry, index) => {
+          return (
+            <TodoListItem
+              entry={entry}
+              handleOnClickEntry={handleOnClickEntry}
+              key={index}
+              index={index}
+            />
+          );
+        }
+      );
     } else {
       return <div />;
     }
@@ -152,6 +167,11 @@ const Dashboard = (props) => {
               <Paper variant="outlined" square className={classes.h100}>
                 <Grid container direction="column" justify="flex-start">
                   {todoListsMap}
+                  <Grid item alignSelf="center" className={classes.mt8}>
+                    <Button variant="contained" color="primary">
+                      Create New Todo List
+                    </Button>
+                  </Grid>
                 </Grid>
               </Paper>
             </Grid>
@@ -162,7 +182,7 @@ const Dashboard = (props) => {
                 className={classes.todoListEntries}
               >
                 <Grid container direction="column" justify="flex-start">
-                  {todoListEntryMap(highlighted)}
+                  {todoListEntriesMap()}
                 </Grid>
               </Paper>
             </Grid>

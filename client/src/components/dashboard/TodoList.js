@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { makeStyles, Grid, Typography } from "@material-ui/core";
 
@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = (props) => {
   const classes = useStyles();
 
+  const { title, handleOnClickList, index } = props;
+
   return (
     <Grid
       item
@@ -21,12 +23,12 @@ const TodoList = (props) => {
       className={classes.bottomBorderOnly}
       onClick={(event) => {
         event.preventDefault();
-        props.handleOnClickTodoList(props.index);
+        handleOnClickList(index);
       }}
     >
       <Grid container direction="row" alignItems="center">
         <Typography variant="body1" className={classes.p8}>
-          {props.title}
+          {title}
         </Typography>
       </Grid>
     </Grid>
