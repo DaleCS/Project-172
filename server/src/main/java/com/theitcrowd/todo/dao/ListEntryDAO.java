@@ -12,6 +12,22 @@ public interface ListEntryDAO extends CrudRepository<TodoListEntry, Long>{
 	 List<TodoListEntry> findAllEntries(long id); 
 	
 	 @Modifying
+	 @Query(value = "DELETE FROM todolistentries WHERE todo_list_id = ?1", nativeQuery = true)
+	 void deleteList(long todo_list_id);
+	 
+	 @Modifying
 	 @Query(value = "INSERT INTO todolistentries(title, todo_list_id, status) VALUES (?1, ?2, ?3)", nativeQuery = true)
-	 void insertEntry(String title, long todolist_id, String status); 
+	 void insertEntry(String title, long todolist_id, String status);
+	 
+	 @Modifying
+	 @Query(value = "DELETE FROM todolistentries WHERE entry_id = ?1", nativeQuery = true)
+	 void deleteEntry(long entry_id);
+
+	 @Modifying
+	 @Query(value = "UPDATE todolistentries SET title = ?2 WHERE entry_id = ?1", nativeQuery = true)
+  	 void updateEntryTitle(long entry_id, String title);
+
+	 @Modifying
+	 @Query(value = "UPDATE todolistentries SET status = ?2 WHERE entry_id = ?1", nativeQuery = true)
+	 void updateEntryStatus(long entry_id, String status); 
 }
