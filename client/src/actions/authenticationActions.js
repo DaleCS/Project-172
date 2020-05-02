@@ -34,7 +34,7 @@ export const loginUser = async (userCredentials, setLoading, history) => {
     setLoading(false);
     history.push("/dashboard");
   } catch (errRes) {
-    console.log("Error encountered during log in");
+    console.log(errRes);
     setLoading(false);
   }
 };
