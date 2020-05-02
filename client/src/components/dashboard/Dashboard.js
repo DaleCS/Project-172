@@ -22,16 +22,16 @@ import {
   TextField,
   DialogActions,
   IconButton,
+  Typography,
 } from "@material-ui/core";
 
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import AddIcon from "@material-ui/icons/Add";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  canvas: {
     flexGrow: 1,
     minHeight: "60vh",
-    marginTop: "48px",
   },
   flexGrow1: {
     flexGrow: 1,
@@ -72,6 +72,13 @@ const useStyles = makeStyles((theme) => ({
   AddTodoListDialog: {
     minWidth: "420px",
   },
+  header: {
+    marginTop: "32px",
+    marginBottom: "32px",
+  },
+  underline: {
+    textDecoration: "underline",
+  },
 }));
 
 const Dashboard = (props) => {
@@ -82,10 +89,8 @@ const Dashboard = (props) => {
 
   const [openTodoListDialog, setTodoListDialog] = useState(false);
   const [newTodoListField, setNewTodoListField] = useState("");
-
   const [addTodoListEntryField, setTodoListEntryField] = useState("");
-
-  const [currentTodoListId, setCurrentTodoListId] = useState(-1);
+  const [currentTodoList, setCurrentTodoList] = useState({});
 
   useEffect(() => {
     const fetchUserTodoLists = async () => {
@@ -103,7 +108,7 @@ const Dashboard = (props) => {
    */
   const handleOnClickList = async (index) => {
     if (todoLists[index].todoListId) {
-      setCurrentTodoListId(todoLists[index].todoListId);
+      setCurrentTodoList(todoLists[index]);
       setTodoListEntries(
         await fetchTodoListEntries(
           todoLists[index].todoListId,
@@ -168,23 +173,30 @@ const Dashboard = (props) => {
   const handleCreateTodoList = (event) => {
     event.preventDefault();
 
-    const newTodoList = {
-      title: newTodoListField,
-      description: "",
-      status: "planned",
-    };
+    if (newTodoListField && newTodoListField.length > 0) {
+      const newTodoList = {
+        title: newTodoListField,
+        description: "",
+        status: "planned",
+      };
 
-    addTodoList(newTodoList, setLoadingTodoLists, setTodoLists);
-    setTodoListDialog(false);
+      addTodoList(newTodoList, setLoadingTodoLists, setTodoLists);
+      setTodoListDialog(false);
+      setNewTodoListField("");
+    }
   };
 
   const handleAddTodoListEntry = (event) => {
-    if (currentTodoListId > -1) {
+    if (
+      currentTodoList &&
+      addTodoListEntryField &&
+      addTodoListEntryField.length > 0
+    ) {
       event.preventDefault();
 
       const newTodoListEntry = {
         title: addTodoListEntryField,
-        todo_list_id: currentTodoListId,
+        todo_list_id: currentTodoList.todoListId,
         description: "",
         status: "planned",
       };
@@ -194,6 +206,8 @@ const Dashboard = (props) => {
         setLoadingTodoListEntries,
         setTodoListEntries
       );
+
+      setTodoListEntryField("");
     }
   };
 
@@ -202,134 +216,168 @@ const Dashboard = (props) => {
   };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      alignItems="stretch"
-      className={classes.root}
-    >
-      <Grid item xs={8}>
-        <Paper variant="outlined" square elevation={3} className={classes.h100}>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="stretch"
-            className={classes.h100}
-          >
-            <Grid item xs={4}>
-              <Paper variant="outlined" square className={classes.h100}>
-                <Grid container direction="column" justify="flex-start">
-                  {isLoadingTodoLists === false ? (
-                    todoListsMap
-                  ) : (
-                    <Grid item>
-                      <CircularProgress />
-                    </Grid>
-                  )}
-                  {isLoadingTodoLists === false ? (
-                    <Grid item className={classes.mt8}>
-                      <Grid
-                        container
-                        direction="row"
-                        alignItems="center"
-                        justify="center"
-                        spacing={1}
-                      >
-                        <Grid item>
-                          <IconButton
-                            size="medium"
-                            onClick={handleOpenTodoListDialog}
-                          >
-                            <AddCircleIcon
-                              className={classes.addTodoListBtn}
-                              fontSize="large"
-                            />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    <div />
-                  )}
-                </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={8}>
-              <Paper
-                variant="outlined"
-                square
-                className={classes.todoListEntries}
-              >
-                <Grid container direction="column" justify="flex-start">
-                  {isLoadingTodoListEntries === false ? (
-                    todoListEntriesMap
-                  ) : (
-                    <Grid item>
-                      <CircularProgress />
-                    </Grid>
-                  )}
-                  {currentTodoListId > -1 &&
-                  isLoadingTodoListEntries === false ? (
-                    <Grid item xs={12}>
-                      <Grid
-                        container
-                        direction="row"
-                        justify="flex-start"
-                        alignItems="center"
-                        spacing={1}
-                      >
-                        <Grid item xs={11}>
-                          <TextField
-                            margin="none"
-                            label="Add A New Entry"
-                            size="small"
-                            fullWidth
-                            onChange={handleNewEntryFieldChange}
-                          />
-                        </Grid>
-                        <Grid item xs={1}>
-                          <IconButton onClick={handleAddTodoListEntry}>
-                            <AddIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    <div />
-                  )}
-                </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Paper>
+    <Grid container direction="column" justify="center" alignItems="center">
+      <Grid item>
+        <Typography variant="h4" className={classes.header}>
+          Your To-do Lists
+        </Typography>
       </Grid>
-      <Dialog
-        open={openTodoListDialog}
-        onClose={handleCloseTodoListDialog}
-        className={classes.AddTodoListDialog}
-      >
-        <DialogTitle>Add A New Todo List</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Title"
-            type="email"
-            fullWidth
-            onChange={handleNewTodoListFieldChange}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseTodoListDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleCreateTodoList} color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Grid item className={classes.w100}>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="stretch"
+          className={classes.canvas}
+        >
+          <Grid item xs={8}>
+            <Paper
+              variant="outlined"
+              square
+              elevation={3}
+              className={classes.h100}
+            >
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="stretch"
+                className={classes.h100}
+              >
+                <Grid item xs={4}>
+                  <Paper variant="outlined" square className={classes.h100}>
+                    <Grid container direction="column" justify="flex-start">
+                      {isLoadingTodoLists === false ? (
+                        todoListsMap
+                      ) : (
+                        <Grid item>
+                          <CircularProgress />
+                        </Grid>
+                      )}
+                      {isLoadingTodoLists === false ? (
+                        <Grid item className={classes.mt8}>
+                          <Grid
+                            container
+                            direction="row"
+                            alignItems="center"
+                            justify="center"
+                            spacing={1}
+                          >
+                            <Grid item>
+                              <IconButton
+                                size="medium"
+                                onClick={handleOpenTodoListDialog}
+                              >
+                                <AddCircleIcon
+                                  className={classes.addTodoListBtn}
+                                  fontSize="large"
+                                />
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div />
+                      )}
+                    </Grid>
+                  </Paper>
+                </Grid>
+                <Grid item xs={8}>
+                  <Paper
+                    variant="outlined"
+                    square
+                    className={classes.todoListEntries}
+                  >
+                    <Grid container direction="column" justify="flex-start">
+                      {currentTodoList && isLoadingTodoListEntries === false ? (
+                        <Grid item xs={12}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="center"
+                            alignItems="center"
+                          >
+                            <Typography
+                              variant="h6"
+                              className={classes.underline}
+                            >
+                              {currentTodoList.title}
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div />
+                      )}
+                      {isLoadingTodoListEntries === false ? (
+                        todoListEntriesMap
+                      ) : (
+                        <Grid item>
+                          <CircularProgress />
+                        </Grid>
+                      )}
+                      {currentTodoList &&
+                      currentTodoList.title &&
+                      isLoadingTodoListEntries === false ? (
+                        <Grid item xs={12}>
+                          <Grid
+                            container
+                            direction="row"
+                            justify="flex-start"
+                            alignItems="center"
+                            spacing={1}
+                          >
+                            <Grid item xs={11}>
+                              <TextField
+                                margin="none"
+                                label="Add A New Entry"
+                                size="small"
+                                fullWidth
+                                onChange={handleNewEntryFieldChange}
+                              />
+                            </Grid>
+                            <Grid item xs={1}>
+                              <IconButton onClick={handleAddTodoListEntry}>
+                                <AddIcon />
+                              </IconButton>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                      ) : (
+                        <div />
+                      )}
+                    </Grid>
+                  </Paper>
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+          <Dialog
+            open={openTodoListDialog}
+            onClose={handleCloseTodoListDialog}
+            className={classes.AddTodoListDialog}
+          >
+            <DialogTitle>Add A New Todo List</DialogTitle>
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Title"
+                type="email"
+                fullWidth
+                onChange={handleNewTodoListFieldChange}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseTodoListDialog} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleCreateTodoList} color="primary">
+                Add
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };
