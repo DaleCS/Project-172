@@ -5,7 +5,10 @@ import {
   fetchTodoListEntries,
   addTodoList,
   addTodoListEntry,
+  deleteTodoListEntry
 } from "../../actions/dashboard";
+
+import { logOut } from '../../auth.js';
 
 import TodoList from "./TodoList";
 import TodoListItem from "./TodoListItem";
@@ -130,6 +133,23 @@ const Dashboard = (props) => {
   };
 
   /**
+   * Handles clicks on delete icon
+   * @param {number} index
+   */
+  const handleOnClickDelete = (index) => {
+    const todoListEntriesClone = [...todoListEntries];
+    deleteTodoListEntry(
+      todoListEntriesClone[index],
+      todoListEntriesClone[index].entryId,
+      setLoadingTodoListEntries,
+      setTodoListEntries
+      );
+    setTodoListEntries(todoListEntriesClone);
+    todoListEntriesClone.splice(index, 1);
+    
+  };
+
+  /**
    * Maps through todolists to render them
    */
   const todoListsMap = todoLists.map((list, index) => {
@@ -152,6 +172,7 @@ const Dashboard = (props) => {
         entry={entry}
         index={index}
         handleOnClickEntry={handleOnClickEntry}
+        handleOnClickDelete={handleOnClickDelete}
         key={index}
       />
     );

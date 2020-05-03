@@ -55,7 +55,7 @@ export const fetchTodoListEntries = async (todoListId, setLoading) => {
       config
     );
 
-    // Transform the data into a format that the coponent can better render
+    // Transform the data into a format that the component can better render
     const transformedTodoListsEntries = res.data.map((entry) => {
       const { description, status, title, entry_id } = entry;
       let transformedStatus = false;
@@ -110,6 +110,20 @@ export const addTodoListEntry = async (
   setLoading(true);
   try {
     await axios.post(`/api/todolists/addEntry`, body, config);
+    setTodoListEntries(
+      await fetchTodoListEntries(body.todo_list_id, setLoading)
+    );
+    setLoading(false);
+  } catch (errRes) {
+    console.log(errRes);
+    setLoading(false);
+  }
+};
+
+export const deleteTodoListEntry = async (body, entryId, setLoading, setTodoListEntries) => {
+  setLoading(true);
+  try {
+    await axios.post(`/api/todolists/deleteListEntry?entryID=${entryId}`, config);
     setTodoListEntries(
       await fetchTodoListEntries(body.todo_list_id, setLoading)
     );
