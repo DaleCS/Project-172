@@ -4,7 +4,9 @@ import {
   fetchTodoLists,
   fetchTodoListEntries,
   addTodoList,
+  deleteTodoList,
   addTodoListEntry,
+  deleteTodoListEntry,
 } from "../../actions/dashboard";
 
 import TodoList from "./TodoList";
@@ -119,6 +121,26 @@ const Dashboard = (props) => {
   };
 
   /**
+   * Handles clicks on todo list delete icon
+   * @param {number} index
+   */
+  const handleOnClickDeleteList = async (index) => {
+    const todoListsClone = [...todoLists];
+    todoListsClone[index].title = "";
+    deleteTodoList(
+      todoListsClone[index].todoListId,
+      setLoadingTodoLists,
+      setTodoLists,
+      setTodoListEntries
+    );
+    todoListsClone.splice(index, 1);
+    if(index !== undefined) {
+      setCurrentTodoList(todoListsClone[index]);
+    }
+    setTodoLists(todoListsClone);
+  };
+
+  /**
    * Handles clicks on an entry
    * @param {number} index
    * @param {boolean} value
@@ -130,6 +152,22 @@ const Dashboard = (props) => {
   };
 
   /**
+   * Handles clicks on entry delete icon
+   * @param {number} index
+   */
+  const handleOnClickDelete = (index) => {
+    const todoListEntriesClone = [...todoListEntries];
+    deleteTodoListEntry(
+      currentTodoList,
+      todoListEntriesClone[index].entryId,
+      setLoadingTodoListEntries,
+      setTodoListEntries
+    );
+    todoListEntriesClone.splice(index, 1);
+    setTodoListEntries(todoListEntriesClone); 
+  };
+
+  /**
    * Maps through todolists to render them
    */
   const todoListsMap = todoLists.map((list, index) => {
@@ -137,6 +175,7 @@ const Dashboard = (props) => {
       <TodoList
         title={list.title}
         handleOnClickList={handleOnClickList}
+        handleOnClickDeleteList={handleOnClickDeleteList}
         key={index}
         index={index}
       />
@@ -152,6 +191,7 @@ const Dashboard = (props) => {
         entry={entry}
         index={index}
         handleOnClickEntry={handleOnClickEntry}
+        handleOnClickDelete={handleOnClickDelete}
         key={index}
       />
     );
