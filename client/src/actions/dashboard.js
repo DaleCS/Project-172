@@ -102,10 +102,24 @@ export const addTodoList = async (body, setLoading, setTodoLists) => {
   }
 };
 
-export const addTodoListEntry = async (
-  body,
-  setLoading,
-  setTodoListEntries
+export const deleteTodoList = async (todoListId, setLoading, setTodoLists, setTodoListEntries) => {
+  setLoading(true);
+  try {
+    await axios.post(
+      `/api/todolists/deleteList?todoListID=${todoListId}`,
+      JSON.stringify({ ID: todoListId }),
+      config
+    );
+    setTodoListEntries(await fetchTodoListEntries(todoListId, setLoading));
+    setTodoLists(await fetchTodoLists(setLoading));
+    setLoading(false);
+  } catch (errRes) {
+    console.log(errRes);
+    setLoading(false);
+  }
+};
+
+export const addTodoListEntry = async (body, setLoading, setTodoListEntries
 ) => {
   setLoading(true);
   try {
@@ -120,18 +134,12 @@ export const addTodoListEntry = async (
   }
 };
 
-export const deleteTodoListEntry = async (
-  body,
-  entryId,
-  setLoading,
-  setTodoListEntries
-) => {
+export const deleteTodoListEntry = async (body, entryId, setLoading, setTodoListEntries) => {
   setLoading(true);
   try {
-    console.log(entryId);
     await axios.post(
-      `/api/todolists/deleteListEntry`,
-      JSON.stringify({ entryID: entryId }),
+      `/api/todolists/deleteListEntry?entryID=${entryId}`,
+      JSON.stringify({ ID: entryId }),
       config
     );
     setTodoListEntries(await fetchTodoListEntries(body.todoListId, setLoading));
