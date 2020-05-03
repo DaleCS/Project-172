@@ -5,10 +5,10 @@ import {
   fetchTodoListEntries,
   addTodoList,
   addTodoListEntry,
-  deleteTodoListEntry
+  deleteTodoListEntry,
 } from "../../actions/dashboard";
 
-import { logOut } from '../../auth.js';
+import { logOut } from "../../auth.js";
 
 import TodoList from "./TodoList";
 import TodoListItem from "./TodoListItem";
@@ -138,15 +138,15 @@ const Dashboard = (props) => {
    */
   const handleOnClickDelete = (index) => {
     const todoListEntriesClone = [...todoListEntries];
+    console.log(currentTodoList);
     deleteTodoListEntry(
-      todoListEntriesClone[index],
+      currentTodoList,
       todoListEntriesClone[index].entryId,
       setLoadingTodoListEntries,
       setTodoListEntries
-      );
+    );
     setTodoListEntries(todoListEntriesClone);
     todoListEntriesClone.splice(index, 1);
-    
   };
 
   /**
