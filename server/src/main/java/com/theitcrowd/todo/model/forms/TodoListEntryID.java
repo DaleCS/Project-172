@@ -5,13 +5,13 @@ import com.sun.istack.NotNull;
 
 public class TodoListEntryID {
     @NotNull
-    private long entryID;
+    private long ID;
 
-    public TodoListEntryID(@JsonProperty("entryID") long entryID) {
-        this.entryID = entryID;
+    public TodoListEntryID(@JsonProperty("ID") long ID) {
+        this.ID = ID;
     }
 
-    public long getEntryId() {
-        return entryID;
+    public long getId() {
+        return ID;
     }
 }

@@ -20,6 +20,7 @@ import com.theitcrowd.todo.model.*;
 import com.theitcrowd.todo.model.forms.TodoEntryForm;
 import com.theitcrowd.todo.model.forms.TodoListEntryID;
 import com.theitcrowd.todo.model.forms.TodoListForm;
+import com.theitcrowd.todo.model.forms.TodoTitleStatus;
 
 @RequestMapping(path = "api/todolists")
 @RestController
@@ -43,23 +44,23 @@ public class TodoListController {
 
 	@PostMapping(path = "/deleteList")
 	@Transactional
-	public @ResponseBody String deleteList(@RequestParam long todoListID) {
-		listEntryDAO.deleteList(todoListID);
-		todoListDAO.deleteList(todoListID);
+	public @ResponseBody String deleteList(@RequestBody TodoListEntryID todoListID) {
+		listEntryDAO.deleteList(todoListID.getId());
+		todoListDAO.deleteList(todoListID.getId());
 		return "List Deleted";
 	}
 
 	@PostMapping(path = "/updateListTitle")
 	@Transactional
-	public @ResponseBody String updateListTitle(@RequestParam long todoListID, @RequestParam String title) {
-		todoListDAO.updateListTitle(todoListID, title);
+	public @ResponseBody String updateListTitle(@RequestBody TodoTitleStatus todo) {
+		todoListDAO.updateListTitle(todo.getId(), todo.getTitleStatus());
 		return "updated title";
 	}
 
 	@PostMapping(path = "/updateListStatus")
 	@Transactional
-	public @ResponseBody String updateListStatus(@RequestParam long todoListID, @RequestParam String status) {
-		todoListDAO.updateListStatus(todoListID, status);
+	public @ResponseBody String updateListStatus(@RequestBody TodoTitleStatus todo) {
+		todoListDAO.updateListStatus(todo.getId(), todo.getTitleStatus());
 		return "updated status";
 	}
 
@@ -78,21 +79,21 @@ public class TodoListController {
 	@PostMapping(path = "/deleteListEntry")
 	@Transactional
 	public @ResponseBody String deleteListEntry(@RequestBody TodoListEntryID entryID) {
-		listEntryDAO.deleteEntry(entryID.getEntryId());
+		listEntryDAO.deleteEntry(entryID.getId());
 		return "Entry deleted";
 	}
 
 	@PostMapping(path = "/updateEntryTitle")
 	@Transactional
-	public @ResponseBody String updateListEntry(@RequestParam long entryID, @RequestParam String title) {
-		listEntryDAO.updateEntryTitle(entryID, title);
+	public @ResponseBody String updateListEntry(@RequestBody TodoTitleStatus entry) {
+		listEntryDAO.updateEntryTitle(entry.getId(), entry.getTitleStatus());
 		return "updated title";
 	}
 
 	@PostMapping(path = "/updateEntryStatus")
 	@Transactional
-	public @ResponseBody String updateEntryStatus(@RequestParam long entryID, @RequestParam String status) {
-		listEntryDAO.updateEntryStatus(entryID, status);
+	public @ResponseBody String updateEntryStatus(@RequestBody TodoTitleStatus entry) {
+		listEntryDAO.updateEntryStatus(entry.getId(), entry.getTitleStatus());
 		return "updated status";
 	}
 
