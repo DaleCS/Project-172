@@ -1,10 +1,5 @@
 import axios from "axios";
-
-const config = {
-  headers: {
-    "content-type": "application/json",
-  },
-};
+import { getHeaders } from "../auth";
 
 export const registerUser = async (newUser, setLoading, history) => {
   // TODO: Validate user input
@@ -12,7 +7,7 @@ export const registerUser = async (newUser, setLoading, history) => {
   try {
     const body = JSON.stringify(newUser);
 
-    await axios.post("/api/user/register", body, config);
+    await axios.post("/api/user/register", body, getHeaders());
 
     setLoading(false);
     history.push("/login");
@@ -22,18 +17,26 @@ export const registerUser = async (newUser, setLoading, history) => {
   }
 };
 
-export const loginUser = async (userCredentials, setLoading, history) => {
+export const loginUser = async (
+  userCredentials,
+  setLoading,
+  history,
+  handleLogIn
+) => {
   setLoading(true);
   try {
     const body = JSON.stringify(userCredentials);
 
-    const res = await axios.post("/api/user/login", body, config);
+    const res = await axios.post("/api/user/login", body, getHeaders());
 
     console.log(res.data);
 
     localStorage.setItem("todotoken", JSON.stringify(res.data));
 
+    console.log(handleLogIn);
+
     setLoading(false);
+    handleLogIn(true);
     history.push("/dashboard");
   } catch (errRes) {
     console.log(errRes);

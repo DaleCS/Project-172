@@ -8,5 +8,30 @@ export const isLoggedIn = () => {
 };
 
 export const logOut = () => {
-  Storage.removeItem("todotoken");
+  localStorage.removeItem("todotoken");
+};
+
+export const getCurrentUserData = () => {
+  const user = JSON.parse(localStorage.getItem("todotoken"));
+  return user;
+};
+
+export const getHeaders = (withToken = false) => {
+  const user = getCurrentUserData();
+  if (withToken) {
+    return {
+      headers: {
+        "content-type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+  } else {
+    return {
+      headers: {
+        "content-type": "application/json",
+        Accept: "application/json",
+      },
+    };
+  }
 };
