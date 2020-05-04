@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = (props) => {
   const classes = useStyles();
 
-  const { title, handleOnClickList, handleOnClickUpdateList, handleOnClickDeleteList, handleEditTodoListDialog, index } = props;
+  const { title, handleOnClickList, handleOnClickUpdateList, handleOnClickDeleteList, handleUpdateTodoListDialog, index } = props;
 
   return (
     <Grid container 
@@ -39,7 +39,7 @@ const TodoList = (props) => {
           <IconButton
             onClick={(event) => {
               event.preventDefault();
-              handleEditTodoListDialog();
+              handleUpdateTodoListDialog();
               handleOnClickUpdateList(index);
             }}
           >

@@ -7,6 +7,7 @@ import {
   updateTodoList,
   deleteTodoList,
   addTodoListEntry,
+  updateTodoListEntry,
   deleteTodoListEntry,
 } from "../../actions/dashboard";
 
@@ -91,18 +92,18 @@ const Dashboard = (props) => {
   const [isLoadingTodoListEntries, setLoadingTodoListEntries] = useState(false);
 
   const [openTodoListDialog, setTodoListDialog] = useState(false);
-  const [editTodoListDialog, setEditTodoListDialog] = useState(false);
+  const [updateTodoListDialog, setUpdateTodoListDialog] = useState(false);
+  const [updateTodoListEntryDialog, setUpdateTodoListEntryDialog] = useState(false);
   const [newTodoListField, setNewTodoListField] = useState("");
-  const [editTodoListField, setEditTodoListField] = useState("");
+  const [updateTodoListField, setUpdateTodoListField] = useState("");
   const [addTodoListEntryField, setTodoListEntryField] = useState("");
+  const [updateTodoListEntryField, setUpdateTodoListEntryField] = useState("");
   const [currentTodoList, setCurrentTodoList] = useState({});
 
   useEffect(() => {
     const fetchUserTodoLists = async () => {
       setTodoLists(await fetchTodoLists(setLoadingTodoLists));
-    };
-
-    fetchUserTodoLists();
+    };    fetchUserTodoLists();
   }, []);
 
   const classes = useStyles(); // CSS Styling for UI elements
@@ -112,6 +113,7 @@ const Dashboard = (props) => {
    * @param {number} index
    */
   const handleOnClickList = async (index) => {
+    setUpdateTodoListEntryDialog(true);
     if (todoLists[index].todoListId) {
       setCurrentTodoList(todoLists[index]);
       setTodoListEntries(
@@ -120,6 +122,7 @@ const Dashboard = (props) => {
           setLoadingTodoListEntries
         )
       );
+      console.log("in handleOnClickList: " + updateTodoListEntryDialog);
     }
   };
 
@@ -167,8 +170,19 @@ const Dashboard = (props) => {
    * @param {number} index
    * @param {boolean} value
    */
-  const handleOnClickUpdateEntry = (index, value) => {
-    
+  const handleOnClickUpdateEntry = (index) => {
+    console.log("in handleOnClickUpdateEntry: " + updateTodoListEntryDialog);
+    if(updateTodoListEntryDialog) {
+      const todoListEntriesClone = [...todoListEntries];
+      todoListEntriesClone[index].entry = "Helloooo";
+      updateTodoListEntry(
+        todoListEntriesClone[index].entryId,
+        todoListEntriesClone[index].entry,
+        setLoadingTodoListEntries,
+        setTodoListEntries
+      )
+      setTodoListEntries(todoListEntriesClone);
+    }
   };
 
   /**
@@ -187,8 +201,18 @@ const Dashboard = (props) => {
     setTodoListEntries(todoListEntriesClone); 
   };
 
-  const handleEditTodoListDialog = () => {
-    setEditTodoListDialog(true);
+  const handleUpdateTodoListDialog = () => {
+    setUpdateTodoListDialog(true);
+  };
+
+  const handleUpdateTodoListEntryDialog = () => {
+    setUpdateTodoListEntryDialog(true);
+    console.log("in handleUpdateTodoListEntryDialog: " + updateTodoListEntryDialog);
+  }; 
+
+  const handleCloseTodoListEntryDialog = () => {
+    setUpdateTodoListEntryDialog(false);
+    console.log("in handleCloseTodoListEntryDialog: " + updateTodoListEntryDialog);
   };
 
   /**
@@ -201,7 +225,7 @@ const Dashboard = (props) => {
         handleOnClickList={handleOnClickList}
         handleOnClickUpdateList={handleOnClickUpdateList}
         handleOnClickDeleteList={handleOnClickDeleteList}
-        handleEditTodoListDialog={handleEditTodoListDialog}
+        handleUpdateTodoListDialog={handleUpdateTodoListDialog}
         key={index}
         index={index}
       />
@@ -217,28 +241,31 @@ const Dashboard = (props) => {
         entry={entry}
         index={index}
         handleOnClickEntry={handleOnClickEntry}
+        handleOnClickUpdateEntry={handleOnClickUpdateEntry}
         handleOnClickDeleteEntry={handleOnClickDeleteEntry}
+        handleUpdateTodoListEntryDialog={handleUpdateTodoListEntryDialog}
+        handleCloseTodoListEntryDialog={handleCloseTodoListEntryDialog}
         key={index}
       />
     );
   });
 
+  const handleOpenTodoListDialog = (event) => {
+    event.preventDefault();
+    setTodoListDialog(true);
+  };
+
   const handleNewTodoListFieldChange = (event) => {
     setNewTodoListField(event.target.value);
   };
 
-  const handleEditTodoListFieldChange = (event) => {
-    setEditTodoListField(event.target.value);
+  const handleUpdateTodoListFieldChange = (event) => {
+    setUpdateTodoListField(event.target.value);
   };
 
   const handleCloseTodoListDialog = () => {
     setTodoListDialog(false);
-    setEditTodoListDialog(false);
-  };
-
-  const handleOpenTodoListDialog = (event) => {
-    event.preventDefault();
-    setTodoListDialog(true);
+    setUpdateTodoListDialog(false);
   };
 
   const handleCreateTodoList = (event) => {
@@ -259,16 +286,15 @@ const Dashboard = (props) => {
 
   const handleUpdateTodoList = (event) => {
     event.preventDefault();
-    if(editTodoListField && editTodoListField.length > 0) {
-      currentTodoList.title = editTodoListField;
-      console.log(currentTodoList.todoListId, currentTodoList.title);
+    if(updateTodoListField && updateTodoListField.length > 0) {
+      currentTodoList.title = updateTodoListField;
       updateTodoList(
         currentTodoList.todoListId,
         currentTodoList.title,
         setLoadingTodoLists, 
         setTodoLists
       );
-      setEditTodoListDialog(false);
+      setUpdateTodoListDialog(false);
       setNewTodoListField("");
     }
   };
@@ -300,6 +326,11 @@ const Dashboard = (props) => {
 
   const handleNewEntryFieldChange = (event) => {
     setTodoListEntryField(event.target.value);
+  };
+
+  const handleUpdateEntryFieldChange = (event) => {
+    setUpdateTodoListEntryField(event.target.value);
+    
   };
 
   return (
@@ -469,7 +500,7 @@ const Dashboard = (props) => {
           </Dialog>
          
           <Dialog
-            open={editTodoListDialog}
+            open={updateTodoListDialog}
             onClose={handleCloseTodoListDialog}
             className={classes.AddTodoListDialog}
           >
@@ -481,7 +512,7 @@ const Dashboard = (props) => {
                   label={currentTodoList.title}
                   type="email"
                   fullWidth
-                  onChange={handleEditTodoListFieldChange}
+                  onChange={handleUpdateTodoListFieldChange}
                 />
               </DialogContent>
               
