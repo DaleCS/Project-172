@@ -75,7 +75,9 @@ const Login = (props) => {
       password: passwordField,
     };
 
-    loginUser(userCredentials, setLoading, props.history);
+    console.log(props);
+
+    loginUser(userCredentials, setLoading, props.history, props.handleLogIn);
   };
 
   const onClickBack = (e) => {
