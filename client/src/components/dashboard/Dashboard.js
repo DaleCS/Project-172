@@ -93,7 +93,6 @@ const Dashboard = (props) => {
 
   const [openTodoListDialog, setTodoListDialog] = useState(false);
   const [updateTodoListDialog, setUpdateTodoListDialog] = useState(false);
-  const [updateTodoListEntryDialog, setUpdateTodoListEntryDialog] = useState(false);
   const [newTodoListField, setNewTodoListField] = useState("");
   const [updateTodoListField, setUpdateTodoListField] = useState("");
   const [addTodoListEntryField, setTodoListEntryField] = useState("");
@@ -113,7 +112,6 @@ const Dashboard = (props) => {
    * @param {number} index
    */
   const handleOnClickList = async (index) => {
-    setUpdateTodoListEntryDialog(true);
     if (todoLists[index].todoListId) {
       setCurrentTodoList(todoLists[index]);
       setTodoListEntries(
@@ -122,7 +120,6 @@ const Dashboard = (props) => {
           setLoadingTodoListEntries
         )
       );
-      console.log("in handleOnClickList: " + updateTodoListEntryDialog);
     }
   };
 
@@ -170,19 +167,17 @@ const Dashboard = (props) => {
    * @param {number} index
    * @param {boolean} value
    */
-  const handleOnClickUpdateEntry = (index) => {
-    console.log("in handleOnClickUpdateEntry: " + updateTodoListEntryDialog);
-    if(updateTodoListEntryDialog) {
-      const todoListEntriesClone = [...todoListEntries];
-      todoListEntriesClone[index].entry = "Helloooo";
-      updateTodoListEntry(
-        todoListEntriesClone[index].entryId,
-        todoListEntriesClone[index].entry,
-        setLoadingTodoListEntries,
-        setTodoListEntries
-      )
-      setTodoListEntries(todoListEntriesClone);
-    }
+  const handleOnClickUpdateEntry = (index, value) => {
+    const todoListEntriesClone = [...todoListEntries];
+    todoListEntriesClone[index].entry = value;
+    console.log(todoListEntriesClone[index].entry);
+    updateTodoListEntry(
+      todoListEntriesClone[index].entryId,
+      todoListEntriesClone[index].entry,
+      setLoadingTodoListEntries,
+      setTodoListEntries
+    )
+    setTodoListEntries(todoListEntriesClone);
   };
 
   /**
@@ -203,16 +198,6 @@ const Dashboard = (props) => {
 
   const handleUpdateTodoListDialog = () => {
     setUpdateTodoListDialog(true);
-  };
-
-  const handleUpdateTodoListEntryDialog = () => {
-    setUpdateTodoListEntryDialog(true);
-    console.log("in handleUpdateTodoListEntryDialog: " + updateTodoListEntryDialog);
-  }; 
-
-  const handleCloseTodoListEntryDialog = () => {
-    setUpdateTodoListEntryDialog(false);
-    console.log("in handleCloseTodoListEntryDialog: " + updateTodoListEntryDialog);
   };
 
   /**
@@ -243,8 +228,7 @@ const Dashboard = (props) => {
         handleOnClickEntry={handleOnClickEntry}
         handleOnClickUpdateEntry={handleOnClickUpdateEntry}
         handleOnClickDeleteEntry={handleOnClickDeleteEntry}
-        handleUpdateTodoListEntryDialog={handleUpdateTodoListEntryDialog}
-        handleCloseTodoListEntryDialog={handleCloseTodoListEntryDialog}
+        updateTodoListEntryField={updateTodoListEntryField}
         key={index}
       />
     );
@@ -330,7 +314,6 @@ const Dashboard = (props) => {
 
   const handleUpdateEntryFieldChange = (event) => {
     setUpdateTodoListEntryField(event.target.value);
-    
   };
 
   return (

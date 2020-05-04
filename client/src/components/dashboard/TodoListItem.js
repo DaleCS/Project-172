@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import EditOutlinedIcon from '@material-ui/icons/CreateOutlined';
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoListItem = (props) => {
   const { status, title } = props.entry;
+  const [updateTodoListEntryDialog, setUpdateTodoListEntryDialog] = useState(false);
+  const [updateTodoListEntryField, setUpdateTodoListEntryField] = useState(false);
+  
   const { 
     handleOnClickEntry, 
     handleOnClickUpdateEntry, 
@@ -31,7 +34,6 @@ const TodoListItem = (props) => {
     handleUpdateEntryFieldChange, 
     handleUpdateTodoListEntryDialog, 
     handleCloseTodoListEntryDialog, 
-    updateTodoListEntryDialog, 
     index 
   } = props;
 
@@ -68,8 +70,11 @@ const TodoListItem = (props) => {
                     margin="none"
                     label={title}
                     size="small"
+                    value={updateTodoListEntryField}
                     fullWidth
-                    onChange={handleUpdateEntryFieldChange}
+                    onChange={(event) => {
+                      handleUpdateEntryFieldChange(event);
+                    }}
                   />
                 </div>
               ) : (
@@ -85,8 +90,7 @@ const TodoListItem = (props) => {
             <div>
               <IconButton
                 onClick={(event) => {
-                  event.preventDefault();
-                  handleOnClickUpdateEntry(index);
+                  handleOnClickUpdateEntry(index, event.target.value);
                 }}
               >
                 <CheckOutlinedIcon />
@@ -95,7 +99,7 @@ const TodoListItem = (props) => {
               <IconButton
               onClick={(event) => {
                 event.preventDefault();
-                handleCloseTodoListEntryDialog();
+                setUpdateTodoListEntryDialog(false);
               }}
             >
               <ClearIcon />
@@ -106,8 +110,8 @@ const TodoListItem = (props) => {
             <IconButton
               onClick={(event) => {
                 event.preventDefault();
-                handleUpdateTodoListEntryDialog();
-                handleOnClickUpdateEntry(index);
+                setUpdateTodoListEntryDialog(true);
+                // handleOnClickUpdateEntry(index);
               }}
             >
               <EditOutlinedIcon />
