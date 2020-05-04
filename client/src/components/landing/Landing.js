@@ -1,7 +1,8 @@
 // React imports
 import React, { Component } from "react";
 import styles from "./Landing.module.css";
-import Button from "react-bootstrap/Button";
+
+import { Button } from "@material-ui/core";
 
 class Landing extends Component {
   nextPath(path) {
@@ -19,7 +20,8 @@ class Landing extends Component {
                 <br />
               </h1>
               <Button
-                variant="dark"
+                color="primary"
+                variant="contained"
                 size="lg"
                 onClick={() => this.nextPath("./register")}
               >
