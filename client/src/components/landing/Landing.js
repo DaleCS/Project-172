@@ -16,13 +16,14 @@ class Landing extends Component {
           <div className={styles.opacity}>
             <div className={styles.text}>
               <h1>
-                Your first TODO list marks the first day of a stress-free life.
+                Your first Agenda marks the first day of a stress-free life.
                 <br />
               </h1>
               <Button
                 color="primary"
                 variant="contained"
                 size="lg"
+                style={{ backgroundColor: "#343a40", color: "#ffffff" }}
                 onClick={() => this.nextPath("./register")}
               >
                 Register
@@ -36,12 +37,12 @@ class Landing extends Component {
               <h1>
                 About
                 <br />
-                TODO
+                Agenda
               </h1>
               <p className={styles.p}>
-                TODO helps you organize different sectors of your life within a
-                single application. Finish tasks, errands, assignments, and more
-                by creating customized to-do lists.
+                Agenda helps you organize different sectors of your life within
+                a single application. Finish tasks, errands, assignments, and
+                more by creating customized to-do lists.
                 <br />
                 <br />
                 With additional organizational tools to categorize your to-do
