@@ -9,7 +9,7 @@ import Registration from "./components/authentication/Registration";
 import Login from "./components/authentication/Login";
 import Dashboard from "./components/dashboard/Dashboard";
 
-import NavbarComponent from "./components/layout/Navbar";
+import Navbar from "./components/layout/Navbar";
 import { isLoggedIn, logOut } from "./auth";
 
 const App = () => {
@@ -27,10 +27,7 @@ const App = () => {
 
   return (
     <Router>
-      <NavbarComponent
-        isLoggedInState={isLoggedInState}
-        handleLogOut={handleLogOut}
-      />
+      <Navbar isLoggedInState={isLoggedInState} handleLogOut={handleLogOut} />
       <Switch>
         <Route exact path="/" component={Landing} />
         <Route exact path="/register" component={Registration} />
