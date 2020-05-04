@@ -1,9 +1,9 @@
 import React from "react";
 
 import { makeStyles, Grid, Typography } from "@material-ui/core";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
-import EditOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/DeleteOutlined";
+import EditOutlinedIcon from "@material-ui/icons/CreateOutlined";
 
 const useStyles = makeStyles((theme) => ({
   bottomBorderOnly: {
@@ -17,16 +17,25 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = (props) => {
   const classes = useStyles();
 
-  const { title, handleOnClickList, handleOnClickUpdateList, handleOnClickDeleteList, handleUpdateTodoListDialog, index } = props;
+  const {
+    title,
+    handleOnClickList,
+    handleOnClickUpdateList,
+    handleOnClickDeleteList,
+    handleUpdateTodoListDialog,
+    index,
+  } = props;
 
   return (
-    <Grid container 
+    <Grid
+      container
       alignItems="center"
       className={classes.bottomBorderOnly}
       onClick={(event) => {
         event.preventDefault();
         handleOnClickList(index);
-      }}>
+      }}
+    >
       <Grid item xs={8}>
         <Grid container direction="row" alignItems="center">
           <Typography variant="body1" className={classes.p8}>
@@ -35,7 +44,7 @@ const TodoList = (props) => {
         </Grid>
       </Grid>
       <Grid item xs={4}>
-        <Grid container direction="row" >
+        <Grid container direction="row">
           <IconButton
             onClick={(event) => {
               event.preventDefault();
@@ -46,7 +55,7 @@ const TodoList = (props) => {
             <EditOutlinedIcon />
           </IconButton>
 
-          <IconButton 
+          <IconButton
             aria-label="delete"
             onClick={(event) => {
               event.preventDefault();

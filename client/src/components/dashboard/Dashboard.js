@@ -96,13 +96,13 @@ const Dashboard = (props) => {
   const [newTodoListField, setNewTodoListField] = useState("");
   const [updateTodoListField, setUpdateTodoListField] = useState("");
   const [addTodoListEntryField, setTodoListEntryField] = useState("");
-  const [updateTodoListEntryField, setUpdateTodoListEntryField] = useState("");
   const [currentTodoList, setCurrentTodoList] = useState({});
 
   useEffect(() => {
     const fetchUserTodoLists = async () => {
       setTodoLists(await fetchTodoLists(setLoadingTodoLists));
-    };    fetchUserTodoLists();
+    };
+    fetchUserTodoLists();
   }, []);
 
   const classes = useStyles(); // CSS Styling for UI elements
@@ -145,7 +145,7 @@ const Dashboard = (props) => {
       setTodoListEntries
     );
     todoListsClone.splice(index, 1);
-    if(index !== undefined) {
+    if (index !== undefined) {
       setCurrentTodoList(todoListsClone[index]);
     }
     setTodoLists(todoListsClone);
@@ -170,14 +170,13 @@ const Dashboard = (props) => {
   const handleOnClickUpdateEntry = (index, value) => {
     const todoListEntriesClone = [...todoListEntries];
     todoListEntriesClone[index].entry = value;
-    console.log(todoListEntriesClone[index].entry);
     updateTodoListEntry(
+      currentTodoList,
       todoListEntriesClone[index].entryId,
       todoListEntriesClone[index].entry,
       setLoadingTodoListEntries,
       setTodoListEntries
-    )
-    setTodoListEntries(todoListEntriesClone);
+    );
   };
 
   /**
@@ -193,7 +192,7 @@ const Dashboard = (props) => {
       setTodoListEntries
     );
     todoListEntriesClone.splice(index, 1);
-    setTodoListEntries(todoListEntriesClone); 
+    setTodoListEntries(todoListEntriesClone);
   };
 
   const handleUpdateTodoListDialog = () => {
@@ -228,7 +227,6 @@ const Dashboard = (props) => {
         handleOnClickEntry={handleOnClickEntry}
         handleOnClickUpdateEntry={handleOnClickUpdateEntry}
         handleOnClickDeleteEntry={handleOnClickDeleteEntry}
-        updateTodoListEntryField={updateTodoListEntryField}
         key={index}
       />
     );
@@ -270,12 +268,12 @@ const Dashboard = (props) => {
 
   const handleUpdateTodoList = (event) => {
     event.preventDefault();
-    if(updateTodoListField && updateTodoListField.length > 0) {
+    if (updateTodoListField && updateTodoListField.length > 0) {
       currentTodoList.title = updateTodoListField;
       updateTodoList(
         currentTodoList.todoListId,
         currentTodoList.title,
-        setLoadingTodoLists, 
+        setLoadingTodoLists,
         setTodoLists
       );
       setUpdateTodoListDialog(false);
@@ -310,10 +308,6 @@ const Dashboard = (props) => {
 
   const handleNewEntryFieldChange = (event) => {
     setTodoListEntryField(event.target.value);
-  };
-
-  const handleUpdateEntryFieldChange = (event) => {
-    setUpdateTodoListEntryField(event.target.value);
   };
 
   return (
@@ -452,64 +446,62 @@ const Dashboard = (props) => {
               </Grid>
             </Paper>
           </Grid>
-          
+
           <Dialog
             open={openTodoListDialog}
             onClose={handleCloseTodoListDialog}
             className={classes.AddTodoListDialog}
           >
             <DialogTitle>Add A New Todo List</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label="Title"
-                  type="email"
-                  fullWidth
-                  onChange={handleNewTodoListFieldChange}
-                />
-              </DialogContent>
-              
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label="Title"
+                type="email"
+                fullWidth
+                onChange={handleNewTodoListFieldChange}
+              />
+            </DialogContent>
+
             <DialogActions>
               <Button onClick={handleCloseTodoListDialog} color="primary">
                 Cancel
               </Button>
-        
+
               <Button onClick={handleCreateTodoList} color="primary">
                 Add
               </Button>
-              
             </DialogActions>
           </Dialog>
-         
+
           <Dialog
             open={updateTodoListDialog}
             onClose={handleCloseTodoListDialog}
             className={classes.AddTodoListDialog}
           >
             <DialogTitle>Edit Title</DialogTitle>
-              <DialogContent>
-                <TextField
-                  autoFocus
-                  margin="dense"
-                  label={currentTodoList.title}
-                  type="email"
-                  fullWidth
-                  onChange={handleUpdateTodoListFieldChange}
-                />
-              </DialogContent>
-              
+            <DialogContent>
+              <TextField
+                autoFocus
+                margin="dense"
+                label={currentTodoList.title}
+                type="email"
+                fullWidth
+                onChange={handleUpdateTodoListFieldChange}
+              />
+            </DialogContent>
+
             <DialogActions>
               <Button onClick={handleCloseTodoListDialog} color="primary">
                 Cancel
               </Button>
-        
+
               <Button onClick={handleUpdateTodoList} color="primary">
                 Edit
               </Button>
-              
             </DialogActions>
-          </Dialog> 
+          </Dialog>
         </Grid>
       </Grid>
     </Grid>
