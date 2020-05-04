@@ -81,16 +81,6 @@ const Navbar = (props) => {
                       spacing={2}
                     >
                       <Grid item>
-                        <Link to="/register">
-                          <Button
-                            variant="contained"
-                            className={classes.btnStyle}
-                          >
-                            Sign Up
-                          </Button>
-                        </Link>
-                      </Grid>
-                      <Grid item>
                         <Link to="/login" className={classes.noStyle}>
                           <Button
                             variant="contained"
