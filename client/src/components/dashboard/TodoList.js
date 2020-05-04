@@ -1,8 +1,9 @@
 import React from "react";
 
 import { makeStyles, Grid, Typography } from "@material-ui/core";
-import IconButton from '@material-ui/icons/DeleteOutlined';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import EditOutlinedIcon from '@material-ui/icons/CreateOutlined';
 
 const useStyles = makeStyles((theme) => ({
   bottomBorderOnly: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 const TodoList = (props) => {
   const classes = useStyles();
 
-  const { title, handleOnClickList, handleOnClickDeleteList, index } = props;
+  const { title, handleOnClickList, handleOnClickUpdateList, handleOnClickDeleteList, handleEditTodoListDialog, index } = props;
 
   return (
     <Grid container 
@@ -26,15 +27,25 @@ const TodoList = (props) => {
         event.preventDefault();
         handleOnClickList(index);
       }}>
-      <Grid item xs={11}>
+      <Grid item xs={8}>
         <Grid container direction="row" alignItems="center">
           <Typography variant="body1" className={classes.p8}>
             {title}
           </Typography>
         </Grid>
       </Grid>
-      <Grid item xs={1}>
-        <Grid container direction="row" justify="center" alignItems="center">
+      <Grid item xs={4}>
+        <Grid container direction="row" >
+          <IconButton
+            onClick={(event) => {
+              event.preventDefault();
+              handleEditTodoListDialog();
+              handleOnClickUpdateList(index);
+            }}
+          >
+            <EditOutlinedIcon />
+          </IconButton>
+
           <IconButton 
             aria-label="delete"
             onClick={(event) => {

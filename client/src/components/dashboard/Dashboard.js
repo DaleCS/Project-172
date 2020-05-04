@@ -4,6 +4,7 @@ import {
   fetchTodoLists,
   fetchTodoListEntries,
   addTodoList,
+  updateTodoList,
   deleteTodoList,
   addTodoListEntry,
   deleteTodoListEntry,
@@ -90,7 +91,9 @@ const Dashboard = (props) => {
   const [isLoadingTodoListEntries, setLoadingTodoListEntries] = useState(false);
 
   const [openTodoListDialog, setTodoListDialog] = useState(false);
+  const [editTodoListDialog, setEditTodoListDialog] = useState(false);
   const [newTodoListField, setNewTodoListField] = useState("");
+  const [editTodoListField, setEditTodoListField] = useState("");
   const [addTodoListEntryField, setTodoListEntryField] = useState("");
   const [currentTodoList, setCurrentTodoList] = useState({});
 
@@ -121,7 +124,15 @@ const Dashboard = (props) => {
   };
 
   /**
-   * Handles clicks on todo list delete icon
+   * Handles clicks on todo list's edit icon
+   * @param {number} index
+   */
+  const handleOnClickUpdateList = async (index) => {
+    setCurrentTodoList(todoLists[index]);
+  };
+
+  /**
+   * Handles clicks on todo list's delete icon
    * @param {number} index
    */
   const handleOnClickDeleteList = async (index) => {
@@ -152,10 +163,19 @@ const Dashboard = (props) => {
   };
 
   /**
-   * Handles clicks on entry delete icon
+   * Handles clicks on entry's edit icon
+   * @param {number} index
+   * @param {boolean} value
+   */
+  const handleOnClickUpdateEntry = (index, value) => {
+    
+  };
+
+  /**
+   * Handles clicks on entry's delete icon
    * @param {number} index
    */
-  const handleOnClickDelete = (index) => {
+  const handleOnClickDeleteEntry = (index) => {
     const todoListEntriesClone = [...todoListEntries];
     deleteTodoListEntry(
       currentTodoList,
@@ -167,6 +187,10 @@ const Dashboard = (props) => {
     setTodoListEntries(todoListEntriesClone); 
   };
 
+  const handleEditTodoListDialog = () => {
+    setEditTodoListDialog(true);
+  };
+
   /**
    * Maps through todolists to render them
    */
@@ -175,7 +199,9 @@ const Dashboard = (props) => {
       <TodoList
         title={list.title}
         handleOnClickList={handleOnClickList}
+        handleOnClickUpdateList={handleOnClickUpdateList}
         handleOnClickDeleteList={handleOnClickDeleteList}
+        handleEditTodoListDialog={handleEditTodoListDialog}
         key={index}
         index={index}
       />
@@ -191,7 +217,7 @@ const Dashboard = (props) => {
         entry={entry}
         index={index}
         handleOnClickEntry={handleOnClickEntry}
-        handleOnClickDelete={handleOnClickDelete}
+        handleOnClickDeleteEntry={handleOnClickDeleteEntry}
         key={index}
       />
     );
@@ -201,8 +227,13 @@ const Dashboard = (props) => {
     setNewTodoListField(event.target.value);
   };
 
+  const handleEditTodoListFieldChange = (event) => {
+    setEditTodoListField(event.target.value);
+  };
+
   const handleCloseTodoListDialog = () => {
     setTodoListDialog(false);
+    setEditTodoListDialog(false);
   };
 
   const handleOpenTodoListDialog = (event) => {
@@ -222,6 +253,22 @@ const Dashboard = (props) => {
 
       addTodoList(newTodoList, setLoadingTodoLists, setTodoLists);
       setTodoListDialog(false);
+      setNewTodoListField("");
+    }
+  };
+
+  const handleUpdateTodoList = (event) => {
+    event.preventDefault();
+    if(editTodoListField && editTodoListField.length > 0) {
+      currentTodoList.title = editTodoListField;
+      console.log(currentTodoList.todoListId, currentTodoList.title);
+      updateTodoList(
+        currentTodoList.todoListId,
+        currentTodoList.title,
+        setLoadingTodoLists, 
+        setTodoLists
+      );
+      setEditTodoListDialog(false);
       setNewTodoListField("");
     }
   };
@@ -391,31 +438,64 @@ const Dashboard = (props) => {
               </Grid>
             </Paper>
           </Grid>
+          
           <Dialog
             open={openTodoListDialog}
             onClose={handleCloseTodoListDialog}
             className={classes.AddTodoListDialog}
           >
             <DialogTitle>Add A New Todo List</DialogTitle>
-            <DialogContent>
-              <TextField
-                autoFocus
-                margin="dense"
-                label="Title"
-                type="email"
-                fullWidth
-                onChange={handleNewTodoListFieldChange}
-              />
-            </DialogContent>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label="Title"
+                  type="email"
+                  fullWidth
+                  onChange={handleNewTodoListFieldChange}
+                />
+              </DialogContent>
+              
             <DialogActions>
               <Button onClick={handleCloseTodoListDialog} color="primary">
                 Cancel
               </Button>
+        
               <Button onClick={handleCreateTodoList} color="primary">
                 Add
               </Button>
+              
             </DialogActions>
           </Dialog>
+         
+          <Dialog
+            open={editTodoListDialog}
+            onClose={handleCloseTodoListDialog}
+            className={classes.AddTodoListDialog}
+          >
+            <DialogTitle>Edit Title</DialogTitle>
+              <DialogContent>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  label={currentTodoList.title}
+                  type="email"
+                  fullWidth
+                  onChange={handleEditTodoListFieldChange}
+                />
+              </DialogContent>
+              
+            <DialogActions>
+              <Button onClick={handleCloseTodoListDialog} color="primary">
+                Cancel
+              </Button>
+        
+              <Button onClick={handleUpdateTodoList} color="primary">
+                Edit
+              </Button>
+              
+            </DialogActions>
+          </Dialog> 
         </Grid>
       </Grid>
     </Grid>

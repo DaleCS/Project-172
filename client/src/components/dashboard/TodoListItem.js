@@ -1,6 +1,7 @@
 import React from "react";
-import IconButton from '@material-ui/icons/DeleteOutlined';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import EditOutlinedIcon from '@material-ui/icons/CreateOutlined';
 
 import { makeStyles, Grid, Typography, Checkbox } from "@material-ui/core";
 
@@ -18,13 +19,13 @@ const useStyles = makeStyles((theme) => ({
 
 const TodoListItem = (props) => {
   const { status, title } = props.entry;
-  const { handleOnClickEntry, handleOnClickDelete, index } = props;
+  const { handleOnClickEntry, handleOnClickDeleteEntry, index } = props;
 
   const classes = useStyles();
 
   return (
     <Grid container alignItems="center">
-      <Grid item xs={11}>
+      <Grid item xs={10}>
         <Grid container direction="row" alignItems="center">
           <Grid item>
             <Checkbox
@@ -44,12 +45,16 @@ const TodoListItem = (props) => {
           </Grid>
         </Grid>
       </Grid>
-      <Grid item xs={1} >
+      <Grid item xs={2} >
         <Grid container direction="row" justify="center" alignItems="center">
+          <IconButton>
+            <EditOutlinedIcon />
+          </IconButton>
+
           <IconButton 
             aria-label="delete"
             onClick={(event) => {
-              handleOnClickDelete(index, event.target);
+              handleOnClickDeleteEntry(index, event.target);
             }}
           >
             <DeleteIcon />
