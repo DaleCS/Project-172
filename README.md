@@ -66,6 +66,12 @@ The database schemas & dummy data is included in server/database folder
 
 ![Database ERD](documentation/ERD.png)
 
+### Database Schemas
+
+users(user_id, email, password_hash, username, creation_date) <br/>
+todolists(todo_list_id, user_id, title, description, status, creation_date, modification_date) <br/>
+todolistentries(entry_id, todo_list_id, title, description, status)
+
 ### Server Structure
 
 ![Server Structure](documentation/Server%20Structure.png)
