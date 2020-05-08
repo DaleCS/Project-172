@@ -64,7 +64,7 @@ The database schemas & dummy data is included in server/database folder
 
 ### Database ERD
 
-![ERD](documentation/ERD.png)
+![Database ERD](documentation/ERD.png)
 
 ### Server Structure
 
@@ -76,7 +76,7 @@ The database schemas & dummy data is included in server/database folder
 
 ### Mid-tier API
 
-![API](documentation/api.PNG)
+![Mid-Tier API](documentation/api.PNG)
 
 ### Data Transport Example of a TodoList(JSON):
 
