@@ -1,3 +1,7 @@
+# **IMPORTANT NOTE:**
+
+To avoid getting charged by AWS or hacked, we've stopped our deployments and RDS. Please refer to the demo video in our submission to see them in action.
+
 # **San Jose State University**
 
 ## **Course:** Enterprise Software - CMPE172 / SPRING 2020
@@ -37,8 +41,20 @@ http://agenda-client-dev.us-west-2.elasticbeanstalk.com/
 
 1. `cd` to the project directory.
 2. `cd` to server.
-3. Build the dependencies of the maven project: `mvn spring-boot:run`
-4. Run the main method at server/src/main/java/TodoApplication.java
+3. Build and run the maven project: `mvn spring-boot:run`
+4. If backend fails to run due to failed MySQL connection, read note below:
+
+**IMPORTANT NOTE:** Since we've closed our deployments, our RDS is no longer active and so the backend will not run. To run locally, you need to change the server/src/main/resources/application.properties to connect to your MySQL local instance running at port 3306.
+
+The database schemas & dummy data is included in server/database folder
+
+```
+    spring.datasource.url=jdbc:mysql://localhost:3306/todo?useLegacyDatetimeCode=false&serverTimezone=America/Los_Angeles
+
+    spring.datasource.username=<YOUR MYSQL INSTANCE USERNAME>
+
+    spring.datasource.password=<YOUR MYSQL INSTANCE PASSWORD>
+```
 
 ## Project Documentation
 
