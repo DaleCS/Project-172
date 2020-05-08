@@ -35,3 +35,11 @@ export const getHeaders = (withToken = false) => {
     };
   }
 };
+
+export const getURI = () => {
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:8080";
+  } else {
+    return "http://agenda-server-dev.us-west-2.elasticbeanstalk.com";
+  }
+};

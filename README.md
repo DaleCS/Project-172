@@ -44,7 +44,7 @@ http://agenda-client-dev.us-west-2.elasticbeanstalk.com/
 3. Build and run the maven project: `mvn spring-boot:run`
 4. If backend fails to run due to failed MySQL connection, read note below:
 
-**IMPORTANT NOTE:** Since we've closed our deployments, our RDS is no longer active and so the backend will not run. To run locally, you need to change the server/src/main/resources/application.properties to connect to your MySQL local instance running at port 3306.
+**IMPORTANT NOTE:** Since we've closed our deployments, our RDS is no longer active and so the backend will not run. To run locally, you need to uncomment some lines in the server/src/main/resources/application.properties to connect to your local MySQL instance using your credentials
 
 The database schemas & dummy data is included in server/database folder
 
