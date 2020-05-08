@@ -1,4 +1,4 @@
 FROM openjdk:11
-ADD target/agenda-spring-boot.jar agenda-spring-boot.jar
+ADD target/todo-0.0.1-SNAPSHOT.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "agenda-spring-boot.jar"]
