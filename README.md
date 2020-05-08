@@ -72,6 +72,8 @@ users(user_id, email, password_hash, username, creation_date) <br/>
 todolists(todo_list_id, user_id, title, description, status, creation_date, modification_date) <br/>
 todolistentries(entry_id, todo_list_id, title, description, status)
 
+**NOTE:** The SQL queries to create these tables are included in server/database/schemas.sql as well as some dummy data.
+
 ### Server Structure
 
 ![Server Structure](documentation/Server%20Structure.png)
